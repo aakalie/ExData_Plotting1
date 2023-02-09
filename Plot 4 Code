@@ -1,0 +1,42 @@
+if(!file.exists("exdata-data-household_power_consumption.zip")) {
++     temp <- tempfile()
++     download.file("http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",temp)
++     file <- unzip(temp)
++     unlink(temp)
++ }
+trying URL 'http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip'
+Content type 'application/zip' length 20640916 bytes (19.7 MB)
+downloaded 19.7 MB
+
+> powerconsumed <- read.table(file, header=T, sep=";")
+> 
+> powerconsumed$Date <- as.Date(powerconsumed$Date, format="%d/%m/%Y")
+> yz <- powerconsumed[(powerconsumed$Date=="2007-02-01") | (powerconsumed$Date=="2007-02-02"),]
+> yz$Global_active_power <- as.numeric(as.character(yz$Global_active_power))
+> yz$Global_reactive_power <- as.numeric(as.character(yz$Global_reactive_power))
+> yz$Voltage <- as.numeric(as.character(yz$Voltage))
+> yz <- transform(yz, timestamp=as.POSIXct(paste(Date, Time)), "%d/%m/%Y %H:%M:%S")
+> yz$Sub_metering_1 <- as.numeric(as.character(yz$Sub_metering_1))
+> yz$Sub_metering_2 <- as.numeric(as.character(yz$Sub_metering_2))
+> yz$Sub_metering_3 <- as.numeric(as.character(yz$Sub_metering_3))
+> yz$Sub_metering_3 <- as.numeric(as.character(yz$Sub_metering_3))
+> plot1 <- function() {
++     hist(yz$Global_active_power, main = paste("Global Active Power"), col="green", xlab="Global Active Power (kilowatts)")
++     dev.copy(png, file="plot1.png", width=480, height=480)
++     dev.off()
++     cat("Plot1.png has been saved in", getwd())
++ }
+
+
++     #PLOT 4
++     plot(yz$timestamp,yz$Global_reactive_power, type="l", xlab="datetime", ylab="Global_reactive_power")
++     
++     #OUTPUT
++     dev.copy(png, file="plot4.png", width=480, height=480)
++     dev.off()
++     cat("plot4.png has been saved in", getwd())
++ }
+> plot4()
+plot4.png has been saved in C:/Users/LIFECARE/Documents/ExData_Plotting1
+
+> 
